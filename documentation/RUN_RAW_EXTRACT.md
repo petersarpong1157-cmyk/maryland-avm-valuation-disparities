@@ -1,6 +1,6 @@
 # Raw-extract to model reproduction
 
-This script consolidates the **author's previously passed interactive RStudio checks** into one read-only executable. It is not yet independently tested end-to-end in this consolidated form.
+This read-only script consolidates the author's independently retrained raw-extract-to-model pipeline. **The author executed the consolidated script in a separate `Rscript.exe` process on November 23, 2026: all stages passed, exit code 0.** This is not an external fresh-environment reproduction.
 
 ## Inputs (do not commit them)
 1. Original locally saved 2025 **128,746-row** SDAT residential transactions CSV, not the 63,304-row processed extract.
@@ -35,8 +35,8 @@ exit_code <- system2(
 cat("RAW-EXTRACT RUN EXIT CODE:", exit_code, "\n")
 ```
 
-**Passing requires exit code 0** and final line `LOCAL RAW-EXTRACT-TO-MODEL REPRODUCTION: PASSED`. If it errors, preserve the console error and correct the script; do not label the consolidated run as passed beforehand. Downloading from a commit-specific raw URL avoids stale caching when updating a local copy.
+**The verified run returned exit code 0** and printed `LOCAL RAW-EXTRACT-TO-MODEL REPRODUCTION: PASSED`. Nonfatal package-built-under-R-4.5.3 warnings were reported. For future runs, if an error appears, preserve the console error and correct the script. Use a commit-specific raw URL when historical script immutability matters.
 
-The original *interactive* verification already established: 128,746→65,754→65,578→63,396→63,318→63,304; 1,464 Census cartographic tracts; 0 archived ID/GEOID disagreements; 23/23 original source fields match; eligible N 58,958; chronological splits 38,917/10,671/9,370; hedonic coefficient difference 0; 9,370 independent XGBoost test log predictions match exactly; new XGBoost MAE $103,331.97923281.
+Both the original interactive verification and subsequent consolidated script run established: 128,746→65,754→65,578→63,396→63,318→63,304; 1,464 Census cartographic tracts; 0 archived ID/GEOID disagreements; 23/23 original source fields match; eligible N 58,958; chronological splits 38,917/10,671/9,370; hedonic coefficient difference 0; 9,370 independent XGBoost test log predictions match exactly; new XGBoost MAE $103,331.97923281.
 
 **Not reproduced**: a second, contemporaneously comparable independent extraction of original 2025 SDAT data; historical point-in-time property feature snapshots; third-party clean-environment rerun; complete SHAP and mapping generation from raw records. The public repository includes no row-level source data, individual property information, manuscript, figures, or fitted models.
