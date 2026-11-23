@@ -19,12 +19,12 @@ Rscript R/reproduce_downstream.R "/private/path/SDAT_2025_Market_Sales_With_Cens
 
 The script performs read-only calculations and prints pass/fail results. It does not save data, row-level predictions or models, and it aborts if key source counts or model checks disagree. To retain a log locally, redirect the console output into a git-ignored `local_audits/` directory.
 
-**Do not mistake this for independent raw-data reproduction.** The raw SDAT/API acquisition, upstream coordinate-to-tract assignment, generation of ACS fields from Census API, original training/hyperparameter search, SHAP, and maps are **not included**. Original saved model objects are required. The bootstrap audit uses a different seed and confirms a close but nonidentical 95% interval. Run and review in a separate clean environment before claiming this script was successfully tested there.
+**Do not mistake this for independent raw-data reproduction.** The raw SDAT/API acquisition, upstream coordinate-to-tract assignment, generation of ACS fields from Census API, original training/hyperparameter search, SHAP, and maps are **not included**. Original saved model objects are required. The bootstrap audit uses a different seed and confirms a close but nonidentical 95% interval. **Executed by the author successfully on November 22, 2026** as a separate `Rscript.exe` process with locally retained processed inputs and frozen objects. All assertions passed (exit code 0): eligibility, splits, frozen test accuracy, bootstrap, ACS linkage and three disparity regressions. Nonfatal package-build-version warnings appeared. A fresh independent environment and original raw-data extraction/model retraining have **not** been tested.
 
 
 ## Windows RStudio quick run (existing research session)
 
-If `out_dir`, `sdat_path`, and `acs_path` already point to the verified local research inputs, open the newest repository ZIP in RStudio and execute the following in the Console (adjust `repo_dir` only):
+If `out_dir`, `sdat_path`, and `acs_path` already point to the verified local research inputs, download the latest script and execute it in the Console. The repository ZIP alternative below requires the actual extracted directory path:
 
 ```r
 repo_dir <- "C:/Users/peter/OneDrive/Desktop/maryland-avm-valuation-disparities-main"
