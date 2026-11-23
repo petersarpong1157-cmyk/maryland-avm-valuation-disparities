@@ -19,6 +19,14 @@
 - [x] **November 22, 2026:** Author executed corrected commit `bb2613db64d79c43edc67c5cdad01c5f7ee6df01` in a separate `Rscript.exe` process using the four local inputs. All five printed validation stages passed, including three minority-share gradients and clustered SEs; process exit code **0**.
 - [ ] Independent fresh-clone/fresh-environment rerun by another party (distinct from the author's successful local Rscript run).
 
+## Raw-extract upstream reconstruction and independent retraining
+- [x] Original local 128,746-row SDAT raw file verified; independently reproduced sequential upstream selection (65,754; 65,578; 63,396; 63,318; 63,304).
+- [x] Correct 2024 Maryland **cartographic 1:500,000** Census tract boundaries identified; all 63,304 transaction identifiers and tract GEOIDs matched archived source with zero mismatches; 23 common original source columns matched.
+- [x] Rebuilt model sample and temporal splits from locally retained raw data, independently refit hedonic model (coefficients identical; MAE agreement) and retrained XGBoost with recorded parameters (all held-out predictions identical; test MAE $103,331.97923281).
+- [x] Added concise `R/reproduce_raw_extract.R` and `documentation/RUN_RAW_EXTRACT.md` to consolidate these locally tested steps **without sharing raw inputs or fitted models**.
+- [ ] Execute the new consolidated raw-extract runner as a single command and verify exit code 0 (individual steps have already passed separately).
+- [ ] Independent re-download and historical point-in-time reconciliation of the original SDAT API source, and external fresh-environment reproduction.
+
 ## Outstanding release gates
 - [ ] Independently review source-provider terms and full contents of all original exports before any publication; staged CSV exports remain local and git-ignored.
 - [ ] Recover and publish a carefully redacted, runnable full pipeline for SDAT download/extraction, tract assignment, ACS construction and linkage, eligibility, encoding, model training, inference, SHAP, mapping, and outputs, with permitted data access instructions.
