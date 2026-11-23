@@ -14,9 +14,10 @@
 - [x] Verified minority-share and poverty-rate scaling from 0–100 percent values to units of ten percentage points.
 - [x] No figures, manuscript, row-level transactions, individual predictions, or saved models uploaded.
 
-## Additional runnable script
-- [x] Added a single-command **downstream reproduction script** and instructions requiring local processed SDAT/ACS files and frozen models; code **not yet clean-run validated**.
-- [ ] Run the new script from a fresh clone with the four local inputs and verify all checks pass before claiming an independently executed downstream rerun.
+## Executable downstream script: verified local run
+- [x] Added a single-command **downstream reproduction script** and instructions requiring local processed SDAT/ACS files and frozen models.
+- [x] **November 22, 2026:** Author executed corrected commit `bb2613db64d79c43edc67c5cdad01c5f7ee6df01` in a separate `Rscript.exe` process using the four local inputs. All five printed validation stages passed, including three minority-share gradients and clustered SEs; process exit code **0**.
+- [ ] Independent fresh-clone/fresh-environment rerun by another party (distinct from the author's successful local Rscript run).
 
 ## Outstanding release gates
 - [ ] Independently review source-provider terms and full contents of all original exports before any publication; staged CSV exports remain local and git-ignored.
