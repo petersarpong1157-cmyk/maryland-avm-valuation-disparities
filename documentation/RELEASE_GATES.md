@@ -14,6 +14,10 @@
 - [x] Verified minority-share and poverty-rate scaling from 0–100 percent values to units of ten percentage points.
 - [x] No figures, manuscript, row-level transactions, individual predictions, or saved models uploaded.
 
+## Additional runnable script
+- [x] Added a single-command **downstream reproduction script** and instructions requiring local processed SDAT/ACS files and frozen models; code **not yet clean-run validated**.
+- [ ] Run the new script from a fresh clone with the four local inputs and verify all checks pass before claiming an independently executed downstream rerun.
+
 ## Outstanding release gates
 - [ ] Independently review source-provider terms and full contents of all original exports before any publication; staged CSV exports remain local and git-ignored.
 - [ ] Recover and publish a carefully redacted, runnable full pipeline for SDAT download/extraction, tract assignment, ACS construction and linkage, eligibility, encoding, model training, inference, SHAP, mapping, and outputs, with permitted data access instructions.
