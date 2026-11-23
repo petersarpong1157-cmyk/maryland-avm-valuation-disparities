@@ -2,46 +2,57 @@
 
 Study: **Explainable Automated Valuation Models and Neighborhood Valuation Disparities: Evidence from Maryland Property Transactions**
 
-**Status: partial aggregate-results reproducibility package — NOT a complete, independently rerun replication release.**
+**Status: locally verified downstream reproduction from processed research inputs and frozen model objects; NOT a full independent, clean-environment, source-to-results replication.**
 
-This repository contains research documentation, R scripts to check the consistency of reported aggregate results, and a small set of aggregate reference CSVs. **No figures, manuscripts, raw transaction records, row-level predictions, individual property records, or fitted model files are included.**
+This public repository contains documentation, R scripts for checking reported *aggregate* results, and small aggregate reference tables. **No figures, manuscripts, individual property records, source transaction extracts, row-level predictions, or fitted model files are included.**
 
 ## Study overview
-The research compares hedonic regression with XGBoost for retrospective transaction-price prediction across 58,958 eligible Maryland residential sales in 2025. The temporal split comprises 38,917 training, 10,671 validation, and 9,370 reserved-test observations. On the test period, the reported hedonic MAE was approximately $125,280 versus $103,332 for XGBoost, a 17.52% reduction. The adjusted signed-log-error gradient difference associated with each 10-percentage-point increase in neighborhood minority share was -1.321.
 
-## Run the aggregate consistency check
-Start R from the repository root, then run:
+The study compares hedonic regression and XGBoost for retrospective transaction-price prediction for 58,958 eligible Maryland 2025 residential sales (38,917 train; 10,671 validation; 9,370 held-out test). Recalculated held-out MAE is $125,279.97 for the hedonic model and $103,331.98 for XGBoost, an improvement of $21,947.99 (17.52%).
+
+Adjusted association with each 10-percentage-point increase in neighborhood minority share: hedonic signed-log-error gradient +4.325953 percentage points; XGBoost +3.004657; XGBoost minus hedonic -1.321296. These are observational associations, not causal or discrimination findings.
+
+## Downstream reproduction completed locally
+
+The author executed read-only reproduction checks in RStudio against locally retained *processed* SDAT data, archived ACS tract data, and frozen AVM model objects:
+
+- Reconstructed sequential eligibility: 63,304 tract-assigned source observations to 58,958 eligible sales (exclusions: price 736, size 2,391, build year 673, dwelling units 546; no additional exclusions for date or tract assignment).
+- Reproduced temporal counts: train 38,917; validation 10,671; reserved test 9,370.
+- Recovered dwelling-group encoding from SDAT land-use categories: Residential (R) → Residential; Residential Condominium (U) → Condominium; Town House (TH) → Townhouse. The mapping agreed for all 38,734 uniquely matchable training observations (99.53% of training) and group totals agreed across all 38,917 training observations.
+- Reconstructed the 29-column **sparse** XGBoost feature matrix in the saved feature order and used the frozen 1,195-round prediction protocol. Both held-out models' N, MAE, RMSE, MdAPE, WAPE, and signed-log-error metrics matched archived results to numerical precision.
+- Independently recomputed a 2,000-replication tract-cluster bootstrap using 1,373 tracts and verification seed `20261122`. Observed MAE improvement reproduced exactly to numerical precision. Audit 95% percentile CI [$18,801.18, $25,254.95] closely corroborated, but did **not exactly reproduce**, archived CI [$18,753.05, $25,181.68]. Original RNG protocol not recovered.
+- Linked all 9,370 test observations to 1,475-row archived ACS tract source by 11-digit GEOID (0 unmatched); missing income excluded 8 observations from 2 tracts, leaving 9,362 observations in 1,371 tracts. Archived row order, actual prices, and predictions matched exactly; ACS covariates matched to numerical precision.
+- Refit three `fixest::feols` disparity regressions from the archived 9,362-row analysis dataset with county and month fixed effects and tract-clustered standard errors. All coefficient vectors and minority-gradient standard errors matched archived estimates to numerical precision; minority and poverty percent variables are divided by 10 to express ten-percentage-point units.
+
+See [local reproduction audit](documentation/LOCAL_REPRODUCTION_AUDIT.md) for specific results and limits. These tests were **performed in the author's original RStudio environment**, not with executable end-to-end replication scripts included in this repository.
+
+## Public aggregate consistency check
+
+From repository root:
 
 ```r
 source("R/verify_reported_results.R")
 ```
 
-This verifies *internal numerical consistency of reported summary values only*, **not** the original source extraction, model fitting, statistical inference, or independent end-to-end reproduction. The reference CSVs were transcribed from the author's verified RStudio outputs; they are not substitutes for original source-generated export files.
-
-## Verified local audit status
-In the author's RStudio session, the reference summary check passed; **10/10** original aggregate-export MD5 hashes matched the staging manifest; original MAEs agreed with the repository references within rounding; **18/18** Phase 7B numerical comparisons passed; and Phase 7D SHAP group-sum and complete-case accounting tests passed. The ten locally staged original CSV files contain small aggregate tables, based on the user's printed inspection, without apparent direct individual identifiers. These checks were reported from the original research environment; **they do not represent an independent clean-clone rerun** and do not establish that source data or every cell are safe to distribute.
+This checks the consistency of *published repository reference aggregates*. It **does not rerun the local downstream verification** above or independently reproduce source extraction, model fitting, bootstrap, ACS linkage, or statistical inference. The reference CSVs were transcribed from author-verified output.
 
 ## Stage original result exports locally (do not upload without review)
-In the author's original RStudio project, where `out_dir` points to `AVM_New_Research`:
+
+In the author's research project, where `out_dir` points to the local `AVM_New_Research` directory:
 
 ```r
 source("R/stage_local_exports.R")
 stage_local_exports(out_dir)
 ```
 
-This copies selected aggregate CSV exports into `results/source_exports/` in your local clone. They are deliberately excluded from Git by `.gitignore`. Inspect complete contents, geographic identifiers, filenames, and source-provider rights before release.
+This stages original aggregate tables in `results/source_exports/` locally, excluded by `.gitignore`. Ten original CSVs' MD5 checks matched their staging manifest. Previous local checks found 18/18 aggregate numerical comparisons and matching grouped SHAP summaries. Review source-provider terms and complete disclosure risk before releasing original exports.
 
-## Data provenance
-See `documentation/DATA_PROVENANCE.md`. Source data include Maryland SDAT 2025 property sales and the 2019–2023 ACS five-year tract-level tables. Local model audits used R 4.5.2 and xgboost 3.2.1.1. Original SDAT completeness and point-in-time availability of property characteristics are not independently established.
+## Provenance, limitations, and release status
 
-## Release limitations and next steps
-See `documentation/RELEASE_GATES.md`. Full independent replication requires executable data ingestion, filtering, chronological split, feature engineering, model training, error analyses, SHAP, and mapping scripts, together with an independently verified clean-clone run. None is claimed here.
+See [data provenance](documentation/DATA_PROVENANCE.md) and [release gates](documentation/RELEASE_GATES.md). Original acquisition completeness, point-in-time availability of property features, a clean independent model-training rerun, and full upstream-to-downstream replication remain unverified. The use of post-transaction feature snapshots limits prospective interpretation.
 
-## Related but distinct research
-The existing repository `maryland-hmda-sdat-linkage` addresses mortgage-to-property statistical linkage and is **not** the full replication source for this AVM study.
+This is an **author-executed downstream verification**, not independent third-party audit. The repository does not ship the datasets or saved models needed to run those checks end-to-end.
 
-## Journal confidentiality
-The repository is publicly associated with its GitHub account. Do not link it in a double-anonymous journal submission without checking journal policy and reviewer anonymity requirements.
+## Related research and confidentiality
 
-## Interpreting findings
-Results concern retrospective transaction-price prediction; they do not establish prospectively available property features. Correlation between neighborhood demographics and signed prediction error is not evidence of causal discrimination.
+The `maryland-hmda-sdat-linkage` repository is a different study, not the complete reproduction source for this AVM paper. This GitHub repository is publicly associated with its owner's identity; review double-anonymous journal requirements before citing the repository in a blind manuscript.
