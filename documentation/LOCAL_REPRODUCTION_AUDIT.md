@@ -2,7 +2,7 @@
 
 **Study:** Explainable Automated Valuation Models and Neighborhood Valuation Disparities: Evidence from Maryland Property Transactions
 
-**Audit type:** Author-executed reconstruction using retained processed SDAT transactions, archived ACS tract CSV, saved hedonic/XGBoost objects, saved disparity analysis data, and saved regression models, performed in the original RStudio research environment. This document records the author's console results; no third-party independent clean rerun or complete upstream model retraining is claimed.
+**Audit type:** Author-executed reconstruction using retained processed SDAT transactions, archived ACS tract CSV, saved hedonic/XGBoost objects, saved disparity analysis data, and saved regression models, performed in the original RStudio research environment. This document records the originally verified downstream audit results. A subsequent, separate raw-extract-to-model reproduction, including model retraining, also PASSED in a standalone Rscript process on November 23, 2026; see the appendix below. No third-party independent clean rerun is claimed.
 
 ## Phase 7M: cohort and periods
 Reconstructed original sequential eligibility flow:
@@ -81,8 +81,21 @@ Loaded locally retained ACS tract table with 1,475 unique 11-digit GEOIDs and jo
 - ACS covariate maximum absolute differences: minority share ~7.11e-14; household income 0; poverty rate ~5.68e-14.
 
 ## Scope and safeguards
-- The tests above use **already processed** SDAT and ACS extracts and previously saved model artifacts. They provide strong downstream reproducibility evidence but **do not** replicate primary SDAT extraction, geospatial assignment from raw coordinates, original model fitting/hyperparameter selection, or complete end-to-end workflow.
+- The downstream checks documented in Phases 7–8 use **already processed** SDAT and ACS extracts and saved model artifacts. **Separately**, Phase 9 subsequently reproduced original local raw-extract filtering, tract assignment and model retraining (details below). Historical raw acquisition, third-party rerunning and one single complete raw-to-all-results script have not been verified.
 - The local Phase 7 SHAP aggregate and reference consistency checks are separate from full SHAP re-execution.
 - Test-set predictions were not used to determine the dwelling-group rule; it was recovered by joining the original **training frame** to source training observations and checked against SDAT land-use classes.
 - All transaction-level data, individual property fields, private model binaries, original aggregate exports, manuscript and figures remain outside this GitHub release.
 - This is a report of locally executed verification steps, not third-party independently validated findings. Statistical disparity gradients are conditional associations and should not be represented as proof of discrimination.
+
+## Phase 9: raw-extract-to-model independently retrained locally — November 23, 2026
+
+The author executed [`R/reproduce_raw_extract.R`](../R/reproduce_raw_extract.R) using a separate `Rscript.exe` subprocess. **Exit code: 0**. The script uses the retained original raw 128,746-row SDAT extract; archived tract-assigned CSV and frozen models serve only as comparison benchmarks, **not** as training data or fitted coefficients/trees.
+
+- Reconstructed sequential upstream transaction counts: **128,746 → 65,754 → 65,578 → 63,396 → 63,318 → 63,304**.
+- Identified **2024 Maryland cartographic 1:500,000** tract boundaries (1,464 polygons), reproducing all 63,304 archived transaction IDs and tract GEOIDs, with **zero disagreements**; all 23 overlapping original source columns matched.
+- Rebuilt eligibility **58,958** and train/validation/test splits **38,917 / 10,671 / 9,370**.
+- Fitted a new hedonic model independently: full coefficient match (max absolute difference **0**), test MAE $125,279.97.
+- Trained XGBoost anew with archived recorded hyperparameters: all 9,370 held-out log predictions matched exactly (max difference **0**); validation log RMSE **0.2901576**; test MAE **$103,331.97923281**.
+- No original model objects, raw source files, manuscripts, property records, or figures were modified or uploaded.
+
+This is **author-executed local reproduction**, not a new public SDAT download, independent snapshot reconciliation, prospective performance evaluation, third-party replication, or complete reconstruction of all SHAP/figures/outputs.
