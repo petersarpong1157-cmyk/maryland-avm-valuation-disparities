@@ -130,7 +130,8 @@ i <- match(te$tract, acs$tract)
 stopifnot(!anyNA(i))
 linked <- copy(te)
 for (field in required_acs[-1]) linked[, (field) := acs[[field]][i]]
-complete <- complete.cases(linked[, ..required_acs[-1]])
+acs_fields <- required_acs[-1]
+complete <- complete.cases(linked[, ..acs_fields])
 stopifnot(sum(complete)==9362L,
           sum(!complete)==8L,
           uniqueN(linked$tract[complete])==1371L,
