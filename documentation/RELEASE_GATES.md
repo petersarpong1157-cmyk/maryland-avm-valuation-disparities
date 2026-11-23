@@ -24,7 +24,7 @@
 - [x] Correct 2024 Maryland **cartographic 1:500,000** Census tract boundaries identified; all 63,304 transaction identifiers and tract GEOIDs matched archived source with zero mismatches; 23 common original source columns matched.
 - [x] Rebuilt model sample and temporal splits from locally retained raw data, independently refit hedonic model (coefficients identical; MAE agreement) and retrained XGBoost with recorded parameters (all held-out predictions identical; test MAE $103,331.97923281).
 - [x] Added concise `R/reproduce_raw_extract.R` and `documentation/RUN_RAW_EXTRACT.md` to consolidate these locally tested steps **without sharing raw inputs or fitted models**.
-- [ ] Execute the new consolidated raw-extract runner as a single command and verify exit code 0 (individual steps have already passed separately).
+- [x] **November 23, 2026:** Author executed consolidated `R/reproduce_raw_extract.R` in a separate `Rscript.exe` process with the four private local inputs. Raw filtering, tract assignment, eligibility/splits, newly fitted hedonic and newly trained XGBoost stages **all passed; exit code 0**. Only nonfatal package-built-under-R-4.5.3 warnings were shown.
 - [ ] Independent re-download and historical point-in-time reconciliation of the original SDAT API source, and external fresh-environment reproduction.
 
 ## Outstanding release gates
@@ -36,4 +36,4 @@
 - [ ] Confirm journal confidentiality/double-anonymous rules before citing this identity-linked repository; confirm publication/AI-use policies where relevant.
 - [ ] Review public-release scope and only then consider tagged release or archive.
 
-**Scope:** substantial *author-executed local downstream reproduction* from processed inputs and frozen models. This public repository alone is **not** an executable complete replication package, and no external independent rerun is claimed. See [LOCAL_REPRODUCTION_AUDIT.md](LOCAL_REPRODUCTION_AUDIT.md).
+**Scope:** successful *author-executed local raw-extract-to-model reproduction* and separate downstream reproduction from processed inputs and frozen models. This public repository alone is **not** an executable complete replication package, and no external independent rerun is claimed. See [LOCAL_REPRODUCTION_AUDIT.md](LOCAL_REPRODUCTION_AUDIT.md).
