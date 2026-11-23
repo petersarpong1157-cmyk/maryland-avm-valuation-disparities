@@ -26,9 +26,9 @@ The author executed read-only reproduction checks in RStudio against locally ret
 
 See [local reproduction audit](documentation/LOCAL_REPRODUCTION_AUDIT.md) for specific results and limits. These tests were **performed in the author's original RStudio environment**, not with executable end-to-end replication scripts included in this repository.
 
-## One-command local downstream rerun (new; not yet fresh-run verified)
+## One-command local downstream rerun — passed in author's R environment
 
-The repository now includes [`R/reproduce_downstream.R`](R/reproduce_downstream.R), which attempts to rebuild the sample, frozen-model test accuracy, independent audit bootstrap, ACS link, and three neighborhood regressions from four **private processed inputs**. See [run instructions](documentation/RUN_DOWNSTREAM.md). The script has not yet been executed in a fresh R environment, and it does **not** independently retrieve raw data or retrain the models.
+The repository now includes [`R/reproduce_downstream.R`](R/reproduce_downstream.R), which rebuilds the eligibility and temporal splits, frozen-model test accuracy, a separately seeded audit bootstrap, ACS linkage, and three neighborhood regressions from four **private processed inputs**. See [run instructions](documentation/RUN_DOWNSTREAM.md). **The author ran the corrected commit `bb2613db64d79c43edc67c5cdad01c5f7ee6df01` as a separate Rscript process on November 22, 2026: all assertions passed and exit code was 0.** The run used the author's existing R setup and processed input files, not independently acquired raw data, new model training, or a clean separate environment. Package-build warnings for R 4.5.3 were nonfatal.
 
 ## Public aggregate consistency check
 
