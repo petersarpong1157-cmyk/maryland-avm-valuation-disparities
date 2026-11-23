@@ -26,6 +26,16 @@ The author executed read-only reproduction checks in RStudio against locally ret
 
 See [local reproduction audit](documentation/LOCAL_REPRODUCTION_AUDIT.md) for specific results and limits. These tests were **performed in the author's original RStudio environment**, not with executable end-to-end replication scripts included in this repository.
 
+## Raw-extract source reconstruction and independent model retraining (verified locally)
+
+**Author's interactive RStudio verification passed:** starting from the *original locally retained 128,746-row raw SDAT CSV*, reconstructed 65,754 improved arm's-length transfers; 65,578 with $10,000–$10 million consideration; 63,396 with valid coordinates; 63,318 after excluding 78 non-dwelling units; and precisely 63,304 transactions assigned to tracts using **2024 Census Maryland cartographic 1:500,000 boundaries**. Reproduced archived transaction IDs, all 23 common source fields, and all tract GEOIDs exactly.
+
+The independently rebuilt modeling cohort was 58,958 (38,917 training; 10,671 validation; 9,370 test). A **newly fitted** hedonic model matched original coefficients exactly and test MAE to $0.01. A **newly trained 1,200-tree XGBoost** with recorded settings and 1,195 selected prediction rounds reproduced all held-out log predictions exactly (max difference 0), validation log RMSE 0.2901576 and test MAE $103,331.97923281 (difference from recorded rounded reference $0.00000281). Original models were not modified.
+
+A condensed runnable version of the demonstrated steps is at [`R/reproduce_raw_extract.R`](R/reproduce_raw_extract.R), with [instructions](documentation/RUN_RAW_EXTRACT.md). **The newly consolidated script has not yet been run end-to-end as one script**; the individual stages *have* passed in the author's RStudio session. The new script requires private input files and an internet download of Census boundaries. It has not been validated by a third party in a fresh environment.
+
+**Scope restriction:** this is reproduction *from the author's saved original raw extract*, not a second independent download or historical snapshot verification of Maryland SDAT. Original source changes, retrospective property features, SHAP and map generation, and external third-party replication remain limitations.
+
 ## One-command local downstream rerun — passed in author's R environment
 
 The repository now includes [`R/reproduce_downstream.R`](R/reproduce_downstream.R), which rebuilds the eligibility and temporal splits, frozen-model test accuracy, a separately seeded audit bootstrap, ACS linkage, and three neighborhood regressions from four **private processed inputs**. See [run instructions](documentation/RUN_DOWNSTREAM.md). **The author ran the corrected commit `bb2613db64d79c43edc67c5cdad01c5f7ee6df01` as a separate Rscript process on November 22, 2026: all assertions passed and exit code was 0.** The run used the author's existing R setup and processed input files, not independently acquired raw data, new model training, or a clean separate environment. Package-build warnings for R 4.5.3 were nonfatal.
