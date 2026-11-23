@@ -143,6 +143,8 @@ cat("ACS linkage / eight missing-income exclusions: PASSED\n")
 # Re-estimate three disparity models from re-linked ACS and new frozen predictions.
 z <- linked[complete]
 idx <- which(complete)
+# Create base columns before deriving errors; data.table evaluates := RHS
+# expressions before columns created in the same call become accessible.
 z[, `:=`(
   actual = price,
   hedonic_pred = hedonic_price[idx],
@@ -152,7 +154,9 @@ z[, `:=`(
   poverty_10pp = poverty_rate/10,
   income_10k = median_household_income/10000,
   log_area = log(area),
-  age_2025 = 2025-built,
+  age_2025 = 2025-built
+)]
+z[, `:=`(
   hedonic_signed_log_pct = 100*log(hedonic_pred/actual),
   xgb_signed_log_pct = 100*log(xgb_pred/actual)
 )]
