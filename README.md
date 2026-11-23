@@ -18,6 +18,9 @@ source("R/verify_reported_results.R")
 
 This verifies *internal numerical consistency of reported summary values only*, **not** the original source extraction, model fitting, statistical inference, or independent end-to-end reproduction. The reference CSVs were transcribed from the author's verified RStudio outputs; they are not substitutes for original source-generated export files.
 
+## Verified local audit status
+In the author's RStudio session, the reference summary check passed; **10/10** original aggregate-export MD5 hashes matched the staging manifest; original MAEs agreed with the repository references within rounding; **18/18** Phase 7B numerical comparisons passed; and Phase 7D SHAP group-sum and complete-case accounting tests passed. The ten locally staged original CSV files contain small aggregate tables, based on the user's printed inspection, without apparent direct individual identifiers. These checks were reported from the original research environment; **they do not represent an independent clean-clone rerun** and do not establish that source data or every cell are safe to distribute.
+
 ## Stage original result exports locally (do not upload without review)
 In the author's original RStudio project, where `out_dir` points to `AVM_New_Research`:
 
@@ -26,7 +29,7 @@ source("R/stage_local_exports.R")
 stage_local_exports(out_dir)
 ```
 
-This copies selected aggregate CSV exports into `results/source_exports/` in your local clone. Inspect content, geographic identifiers, filenames, and provider rights before public release.
+This copies selected aggregate CSV exports into `results/source_exports/` in your local clone. They are deliberately excluded from Git by `.gitignore`. Inspect complete contents, geographic identifiers, filenames, and source-provider rights before release.
 
 ## Data provenance
 See `documentation/DATA_PROVENANCE.md`. Source data include Maryland SDAT 2025 property sales and the 2019–2023 ACS five-year tract-level tables. Local model audits used R 4.5.2 and xgboost 3.2.1.1. Original SDAT completeness and point-in-time availability of property characteristics are not independently established.
