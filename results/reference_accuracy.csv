@@ -1,0 +1,3 @@
+model,n,mae,rmse,mdape_pct,wape_pct,mean_signed_log_error
+Hedonic,9370,125280,216191.8,18.73402,24.41966,6.681383
+XGBoost,9370,103332,192477.9,14.24990,20.14155,2.389248
