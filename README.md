@@ -67,6 +67,10 @@ See [data provenance](documentation/DATA_PROVENANCE.md) and [release gates](docu
 
 These are **author-executed local raw-extract-to-model and downstream verifications**, not an independent third-party audit. The repository does not ship the datasets or saved models needed to run those checks end-to-end.
 
+## License
+
+The public repository software and associated documentation are available under the [MIT License](LICENSE). This license does **not** grant rights to third-party Maryland SDAT or U.S. Census data beyond their applicable source terms. Unpublished manuscripts, figures, original transaction files and fitted model objects are not distributed in this repository and are not included in this license grant.
+
 ## Related research and confidentiality
 
 The `maryland-hmda-sdat-linkage` repository is a different study, not the complete reproduction source for this AVM paper. This GitHub repository is publicly associated with its owner's identity; review double-anonymous journal requirements before citing the repository in a blind manuscript.
