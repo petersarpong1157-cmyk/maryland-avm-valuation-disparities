@@ -2,7 +2,7 @@
 
 Study: **Explainable Automated Valuation Models and Neighborhood Valuation Disparities: Evidence from Maryland Property Transactions**
 
-**Status: locally verified downstream reproduction from processed research inputs and frozen model objects; NOT a full independent, clean-environment, source-to-results replication.**
+**Status: author-verified local raw-extract-to-model retraining and downstream reproduction; NOT independent fresh-source acquisition, a clean-environment external replication, or a fully consolidated raw-to-all-outputs run.**
 
 This public repository contains documentation, R scripts for checking reported *aggregate* results, and small aggregate reference tables. **No figures, manuscripts, individual property records, source transaction extracts, row-level predictions, or fitted model files are included.**
 
@@ -24,7 +24,7 @@ The author executed read-only reproduction checks in RStudio against locally ret
 - Linked all 9,370 test observations to 1,475-row archived ACS tract source by 11-digit GEOID (0 unmatched); missing income excluded 8 observations from 2 tracts, leaving 9,362 observations in 1,371 tracts. Archived row order, actual prices, and predictions matched exactly; ACS covariates matched to numerical precision.
 - Refit three `fixest::feols` disparity regressions from the archived 9,362-row analysis dataset with county and month fixed effects and tract-clustered standard errors. All coefficient vectors and minority-gradient standard errors matched archived estimates to numerical precision; minority and poverty percent variables are divided by 10 to express ten-percentage-point units.
 
-See [local reproduction audit](documentation/LOCAL_REPRODUCTION_AUDIT.md) for specific results and limits. These tests were **performed in the author's original RStudio environment**, not with executable end-to-end replication scripts included in this repository.
+See [local reproduction audit](documentation/LOCAL_REPRODUCTION_AUDIT.md) for specific results and limits. These downstream tests were performed in the author's original RStudio environment; the separate downstream Rscript runner subsequently passed with exit code 0. The raw-extract runner also passed separately with exit code 0 (see below).
 
 ## Raw-extract source reconstruction and independent model retraining (verified locally)
 
@@ -32,7 +32,7 @@ See [local reproduction audit](documentation/LOCAL_REPRODUCTION_AUDIT.md) for sp
 
 The independently rebuilt modeling cohort was 58,958 (38,917 training; 10,671 validation; 9,370 test). A **newly fitted** hedonic model matched original coefficients exactly and test MAE to $0.01. A **newly trained 1,200-tree XGBoost** with recorded settings and 1,195 selected prediction rounds reproduced all held-out log predictions exactly (max difference 0), validation log RMSE 0.2901576 and test MAE $103,331.97923281 (difference from recorded rounded reference $0.00000281). Original models were not modified.
 
-A condensed runnable version of the demonstrated steps is at [`R/reproduce_raw_extract.R`](R/reproduce_raw_extract.R), with [instructions](documentation/RUN_RAW_EXTRACT.md). **The newly consolidated script has not yet been run end-to-end as one script**; the individual stages *have* passed in the author's RStudio session. The new script requires private input files and an internet download of Census boundaries. It has not been validated by a third party in a fresh environment.
+A condensed runnable version of the demonstrated steps is at [`R/reproduce_raw_extract.R`](R/reproduce_raw_extract.R), with [instructions](documentation/RUN_RAW_EXTRACT.md). **The author executed the consolidated script in a separate Rscript.exe process on November 23, 2026: all five verification stages passed and the process returned exit code 0.** The script requires four private local input files, including original raw SDAT and reference models used solely for comparisons, and an internet download of Census boundaries. It has not been validated by a third party in a fresh environment.
 
 **Scope restriction:** this is reproduction *from the author's saved original raw extract*, not a second independent download or historical snapshot verification of Maryland SDAT. Original source changes, retrospective property features, SHAP and map generation, and external third-party replication remain limitations.
 
@@ -63,9 +63,9 @@ This stages original aggregate tables in `results/source_exports/` locally, excl
 
 ## Provenance, limitations, and release status
 
-See [data provenance](documentation/DATA_PROVENANCE.md) and [release gates](documentation/RELEASE_GATES.md). Original acquisition completeness, point-in-time availability of property features, a clean independent model-training rerun, and full upstream-to-downstream replication remain unverified. The use of post-transaction feature snapshots limits prospective interpretation.
+See [data provenance](documentation/DATA_PROVENANCE.md) and [release gates](documentation/RELEASE_GATES.md). Original acquisition completeness, point-in-time availability of property features, an external clean-environment model-training rerun, and a single pipeline covering all upstream and downstream analyses remain unverified. The use of post-transaction feature snapshots limits prospective interpretation.
 
-This is an **author-executed downstream verification**, not independent third-party audit. The repository does not ship the datasets or saved models needed to run those checks end-to-end.
+These are **author-executed local raw-extract-to-model and downstream verifications**, not an independent third-party audit. The repository does not ship the datasets or saved models needed to run those checks end-to-end.
 
 ## Related research and confidentiality
 
